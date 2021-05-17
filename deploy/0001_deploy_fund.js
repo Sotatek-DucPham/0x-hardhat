@@ -2,15 +2,16 @@ const func = async function ({ deployments, getNamedAccounts }) {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
 
-  await deploy("Fund", {
+  const decimals = 18;
+  const token = await deploy("Token", {
     from: deployer,
-    args: [],
+    args: ["TOKEN", "TOK", 18, deployer, `1000000000${"0".repeat(decimals)}`],
     log: true,
   });
 
-  await deploy("Token", {
+  const deposit = await deploy("Deposit", {
     from: deployer,
-    args: ["TOKEN", "TOK", 18, deployer, "1000"],
+    args: [],
     log: true,
   });
 };
