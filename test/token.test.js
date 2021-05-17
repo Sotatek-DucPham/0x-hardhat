@@ -27,5 +27,6 @@ describe("Token contract", () => {
     expect(await token.totalSupply()).to.equal(ownerBalance);
 
     await token.transfer(deposit.address, 1);
+    console.log(await deposit.balanceOf(token.address, deposit.address));
   });
 });
