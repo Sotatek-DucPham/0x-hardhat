@@ -42,7 +42,17 @@ module.exports = {
       accounts: [process.env.RINKEBY_PRIVATE_KEY],
     },
   },
-  solidity: "0.8.4",
+  solidity: {
+    // version: "0.8.4",
+    compilers: [
+      {
+        version: "0.8.4",
+      },
+      {
+        version: "0.5.9",
+      },
+    ],
+  },
   paths: {
     sources: "./contract",
   },
