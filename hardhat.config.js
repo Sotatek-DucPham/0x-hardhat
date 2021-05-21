@@ -48,9 +48,21 @@ module.exports = {
     compilers: [
       {
         version: "0.6.5",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
       },
       {
         version: "0.5.9",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
       },
     ],
   },
