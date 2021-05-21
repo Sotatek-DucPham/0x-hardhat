@@ -32,7 +32,14 @@
     js-sha3 "^0.7.0"
     uuid "^3.3.2"
 
-"@0x/contracts-utils@^4.7.8":
+"@0x/contracts-erc20@^3.3.8":
+  version "3.3.8"
+  resolved "https://registry.yarnpkg.com/@0x/contracts-erc20/-/contracts-erc20-3.3.8.tgz#afb9bfc5b53cd3aa5d2d820173544d588a889988"
+  integrity sha512-f5fMsHvOu/csvYAb2tgeBWM8RSPw126BtiRarJ8XVVz9/s3FR2L2EPW3n8xUNO6Xnb8W4YwDBjgyvyUF+9Gffg==
+  dependencies:
+    "@0x/base-contract" "^6.4.0"
+
+"@0x/contracts-utils@4.7.8":
   version "4.7.8"
   resolved "https://registry.yarnpkg.com/@0x/contracts-utils/-/contracts-utils-4.7.8.tgz#381817b4b9743e577ce467680c66d0e429b49225"
   integrity sha512-CGD2Uds8Ox9mH+a5gqk4UKKPzHicvOh3geX7jSrjAC0LrrsPPydg+Wzoub+7YmlOjchkXYEZwybOkVzNHf+J5Q==
