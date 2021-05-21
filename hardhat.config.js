@@ -36,17 +36,18 @@ module.exports = {
     apiKey: process.env.ETHERSCAN_API_KEY,
   },
   networks: {
-    hardhat: {},
+    hardhat: {
+      allowUnlimitedContractSize: true,
+    },
     rinkeby: {
       url: process.env.RINKEBY_RPC,
       accounts: [process.env.RINKEBY_PRIVATE_KEY],
     },
   },
   solidity: {
-    // version: "0.8.4",
     compilers: [
       {
-        version: "0.8.4",
+        version: "0.6.5",
       },
       {
         version: "0.5.9",
