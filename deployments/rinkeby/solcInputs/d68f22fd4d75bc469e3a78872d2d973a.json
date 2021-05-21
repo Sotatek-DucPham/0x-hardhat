@@ -1,0 +1,35 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contract/erc20/ZRXToken.sol": {
+      "content": "/*\n\n  Copyright 2019 ZeroEx Intl.\n\n  Licensed under the Apache License, Version 2.0 (the \"License\");\n  you may not use this file except in compliance with the License.\n  You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n  Unless required by applicable law or agreed to in writing, software\n  distributed under the License is distributed on an \"AS IS\" BASIS,\n  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n  See the License for the specific language governing permissions and\n  limitations under the License.\n\n*/\n\npragma solidity 0.4.11;\n\ncontract Token {\n    /// @return total amount of tokens\n    function totalSupply() constant returns (uint256 supply) {}\n\n    /// @param _owner The address from which the balance will be retrieved\n    /// @return The balance\n    function balanceOf(address _owner) constant returns (uint256 balance) {}\n\n    /// @notice send `_value` token to `_to` from `msg.sender`\n    /// @param _to The address of the recipient\n    /// @param _value The amount of token to be transferred\n    /// @return Whether the transfer was successful or not\n    function transfer(address _to, uint256 _value) returns (bool success) {}\n\n    /// @notice send `_value` token to `_to` from `_from` on the condition it is approved by `_from`\n    /// @param _from The address of the sender\n    /// @param _to The address of the recipient\n    /// @param _value The amount of token to be transferred\n    /// @return Whether the transfer was successful or not\n    function transferFrom(\n        address _from,\n        address _to,\n        uint256 _value\n    ) returns (bool success) {}\n\n    /// @notice `msg.sender` approves `_addr` to spend `_value` tokens\n    /// @param _spender The address of the account able to transfer the tokens\n    /// @param _value The amount of wei to be approved for transfer\n    /// @return Whether the approval was successful or not\n    function approve(address _spender, uint256 _value) returns (bool success) {}\n\n    /// @param _owner The address of the account owning tokens\n    /// @param _spender The address of the account able to transfer the tokens\n    /// @return Amount of remaining tokens allowed to spent\n    function allowance(address _owner, address _spender)\n        constant\n        returns (uint256 remaining)\n    {}\n\n    event Transfer(address indexed _from, address indexed _to, uint256 _value);\n    event Approval(\n        address indexed _owner,\n        address indexed _spender,\n        uint256 _value\n    );\n}\n\ncontract ERC20Token is Token {\n    function transfer(address _to, uint256 _value) returns (bool) {\n        //Default assumes totalSupply can't be over max (2^256 - 1).\n        if (\n            balances[msg.sender] >= _value &&\n            balances[_to] + _value >= balances[_to]\n        ) {\n            balances[msg.sender] -= _value;\n            balances[_to] += _value;\n            Transfer(msg.sender, _to, _value);\n            return true;\n        } else {\n            return false;\n        }\n    }\n\n    function transferFrom(\n        address _from,\n        address _to,\n        uint256 _value\n    ) returns (bool) {\n        if (\n            balances[_from] >= _value &&\n            allowed[_from][msg.sender] >= _value &&\n            balances[_to] + _value >= balances[_to]\n        ) {\n            balances[_to] += _value;\n            balances[_from] -= _value;\n            allowed[_from][msg.sender] -= _value;\n            Transfer(_from, _to, _value);\n            return true;\n        } else {\n            return false;\n        }\n    }\n\n    function balanceOf(address _owner) constant returns (uint256) {\n        return balances[_owner];\n    }\n\n    function approve(address _spender, uint256 _value) returns (bool) {\n        allowed[msg.sender][_spender] = _value;\n        Approval(msg.sender, _spender, _value);\n        return true;\n    }\n\n    function allowance(address _owner, address _spender)\n        constant\n        returns (uint256)\n    {\n        return allowed[_owner][_spender];\n    }\n\n    mapping(address => uint256) balances;\n    mapping(address => mapping(address => uint256)) allowed;\n    uint256 public totalSupply;\n}\n\ncontract UnlimitedAllowanceToken is ERC20Token {\n    uint256 constant MAX_UINT = 2**256 - 1;\n\n    /// @dev ERC20 transferFrom, modified such that an allowance of MAX_UINT represents an unlimited allowance.\n    /// @param _from Address to transfer from.\n    /// @param _to Address to transfer to.\n    /// @param _value Amount to transfer.\n    /// @return Success of transfer.\n    function transferFrom(\n        address _from,\n        address _to,\n        uint256 _value\n    ) public returns (bool) {\n        uint256 allowance = allowed[_from][msg.sender];\n        if (\n            balances[_from] >= _value &&\n            allowance >= _value &&\n            balances[_to] + _value >= balances[_to]\n        ) {\n            balances[_to] += _value;\n            balances[_from] -= _value;\n            if (allowance < MAX_UINT) {\n                allowed[_from][msg.sender] -= _value;\n            }\n            Transfer(_from, _to, _value);\n            return true;\n        } else {\n            return false;\n        }\n    }\n}\n\ncontract ZRXToken is UnlimitedAllowanceToken {\n    // solhint-disable const-name-snakecase\n    uint8 public constant decimals = 18;\n    uint256 public totalSupply = 10**27; // 1 billion tokens, 18 decimal places\n    string public constant name = \"0x Protocol Token\";\n    string public constant symbol = \"ZRX\";\n\n    // solhint-enableconst-name-snakecase\n\n    function ZRXToken() public {\n        balances[msg.sender] = totalSupply;\n    }\n}\n"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 1000
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}
