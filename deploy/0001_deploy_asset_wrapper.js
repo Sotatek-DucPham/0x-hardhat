@@ -102,26 +102,43 @@ const func = async function ({ deployments, getNamedAccounts, getChainId }) {
   });
 
   // Dev Utils
+  const libAssetData = await deploy("LibAssetData", {
+    from: deployer,
+    log: true,
+  });
+  const libDydxBalance = await deploy("LibDydxBalance", {
+    from: deployer,
+    log: true,
+    libraries: { LibAssetData: libAssetData.address },
+  });
+  const libOrderTransferSimulation = await deploy("LibOrderTransferSimulation", {
+    from: deployer,
+    log: true,
+  });
+  const libTransactionDecoder = await deploy("LibTransactionDecoder", {
+    from: deployer,
+    log: true,
+  });
   const devUtils = await deploy("DevUtils", {
     from: deployer,
     log: true,
     args: [exchange.address, NULL_ADDRESS, NULL_ADDRESS],
+    libraries: {
+      LibAssetData: libAssetData.address,
+      LibDydxBalance: libDydxBalance.address,
+      LibOrderTransferSimulation: libOrderTransferSimulation.address,
+      LibTransactionDecoder: libTransactionDecoder.address,
+    },
   });
 
-  // // tslint:disable-next-line:no-unused-variable
-  // const erc1155DummyToken = await ERC1155MintableContract.deployFrom0xArtifactAsync(
-  //   erc1155Artifacts.ERC1155Mintable,
-  //   provider,
-  //   txDefaults,
-  //   allArtifacts
-  // );
-
-  // const erc20BridgeProxy = await ERC20BridgeProxyContract.deployFrom0xArtifactAsync(
-  //   assetProxyArtifacts.ERC20BridgeProxy,
-  //   provider,
-  //   txDefaults,
-  //   allArtifacts
-  // );
+  const erc1155DummyToken = await deploy("ERC1155Mintable", {
+    from: deployer,
+    log: true,
+  });
+  const erc20BridgeProxy = await deploy("ERC20BridgeProxy", {
+    from: deployer,
+    log: true,
+  });
 };
 
 module.exports = func;
