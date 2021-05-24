@@ -6,25 +6,6 @@ require("@nomiclabs/hardhat-truffle5");
 require("@nomiclabs/hardhat-etherscan");
 require("@nomiclabs/hardhat-ethers");
 
-// command
-task("accounts", "Prints the list of accounts", async () => {
-  const accounts = await ethers.getSigners();
-
-  for (const account of accounts) {
-    console.log(account.address);
-  }
-});
-
-task(
-  "blockNumber",
-  "Prints the current block number",
-  async (_, { ethers }) => {
-    await ethers.provider.getBlockNumber().then((blockNumber) => {
-      console.log("Current block number: " + blockNumber);
-    });
-  }
-);
-
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
@@ -74,8 +55,5 @@ module.exports = {
         },
       },
     ],
-  },
-  paths: {
-    sources: "./contract",
   },
 };
