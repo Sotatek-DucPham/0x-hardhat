@@ -16,6 +16,8 @@
   "devDependencies": {
     "@0x/contracts-asset-proxy": "3.7.12",
     "@0x/contracts-erc20": "3.3.9",
+    "@0x/contracts-exchange": "3.2.31",
+    "@0x/contracts-staking": "^2.0.38",
     "@0x/contracts-utils": "4.7.9",
     "@nomiclabs/hardhat-ethers": "2.0.2",
     "@nomiclabs/hardhat-etherscan": "2.1.2",
