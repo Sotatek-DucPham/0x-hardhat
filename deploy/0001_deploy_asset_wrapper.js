@@ -1,7 +1,7 @@
 const { erc20TokenInfo, erc721TokenInfo } = require("../src/utils/token_info");
 
 const func = async function ({ deployments, getNamedAccounts, getChainId }) {
-  const { deploy } = deployments;
+  const { deploy, execute } = deployments;
   const { deployer } = await getNamedAccounts();
 
   await deploy("ERC20Proxy", {
@@ -28,7 +28,7 @@ const func = async function ({ deployments, getNamedAccounts, getChainId }) {
   });
 
   const chainId = await getChainId();
-  const exchangeTx = await deploy("Exchange", {
+  await deploy("Exchange", {
     from: deployer,
     args: [chainId],
     log: true,
@@ -70,18 +70,31 @@ const func = async function ({ deployments, getNamedAccounts, getChainId }) {
   });
 
   const erc20Proxy = await deployments.get("ERC20Proxy");
-  console.log(erc20Proxy);
-  await erc20Proxy.addAuthorizedAddress(exchangeTx.address);
-
-  // await erc721Proxy
-  //   .addAuthorizedAddress(exchange.address)
-  //   .awaitTransactionSuccessAsync(txDefaults);
-  // await erc1155Proxy
-  //   .addAuthorizedAddress(exchange.address)
-  //   .awaitTransactionSuccessAsync(txDefaults);
-  // await multiAssetProxy
-  //   .addAuthorizedAddress(exchange.address)
-  //   .awaitTransactionSuccessAsync(txDefaults);
+  const exchange = await deployments.get("ERC20Proxy");
+  await execute(
+    "ERC20Proxy",
+    { from: deployer },
+    "addAuthorizedAddress",
+    exchange.address
+  );
+  await execute(
+    "ERC721Proxy",
+    { from: deployer },
+    "addAuthorizedAddress",
+    exchange.address
+  );
+  await execute(
+    "ERC1155Proxy",
+    { from: deployer },
+    "addAuthorizedAddress",
+    exchange.address
+  );
+  await execute(
+    "MultiAssetProxy",
+    { from: deployer },
+    "addAuthorizedAddress",
+    exchange.address
+  );
 };
 
 module.exports = func;
