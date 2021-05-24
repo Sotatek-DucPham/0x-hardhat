@@ -1,5 +1,7 @@
 const { erc20TokenInfo, erc721TokenInfo } = require("../src/utils/token_info");
 
+const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
+
 const func = async function ({ deployments, getNamedAccounts, getChainId }) {
   const { deploy, execute } = deployments;
   const { deployer } = await getNamedAccounts();
@@ -82,6 +84,44 @@ const func = async function ({ deployments, getNamedAccounts, getChainId }) {
   await execute("MultiAssetProxy", { from: deployer }, "registerAssetProxy", erc721Proxy.address);
   await execute("MultiAssetProxy", { from: deployer }, "registerAssetProxy", erc1155Proxy.address);
   await execute("MultiAssetProxy", { from: deployer }, "registerAssetProxy", staticCallProxy.address);
+
+  await execute("Exchange", { from: deployer }, "registerAssetProxy", erc20Proxy.address);
+  await execute("Exchange", { from: deployer }, "registerAssetProxy", erc721Proxy.address);
+  await execute("Exchange", { from: deployer }, "registerAssetProxy", erc1155Proxy.address);
+  await execute("Exchange", { from: deployer }, "registerAssetProxy", multiAssetProxy.address);
+  await execute("Exchange", { from: deployer }, "registerAssetProxy", staticCallProxy.address);
+
+  // CoordinatorRegistry
+  const coordinatorRegistry = await deploy("CoordinatorRegistry", { from: deployer, log: true, args: [] });
+
+  // Coordinator
+  const coordinator = await deploy("Coordinator", {
+    from: deployer,
+    log: true,
+    args: [exchange.address, chainId],
+  });
+
+  // Dev Utils
+  const devUtils = await deploy("DevUtils", {
+    from: deployer,
+    log: true,
+    args: [exchange.address, NULL_ADDRESS, NULL_ADDRESS],
+  });
+
+  // // tslint:disable-next-line:no-unused-variable
+  // const erc1155DummyToken = await ERC1155MintableContract.deployFrom0xArtifactAsync(
+  //   erc1155Artifacts.ERC1155Mintable,
+  //   provider,
+  //   txDefaults,
+  //   allArtifacts
+  // );
+
+  // const erc20BridgeProxy = await ERC20BridgeProxyContract.deployFrom0xArtifactAsync(
+  //   assetProxyArtifacts.ERC20BridgeProxy,
+  //   provider,
+  //   txDefaults,
+  //   allArtifacts
+  // );
 };
 
 module.exports = func;

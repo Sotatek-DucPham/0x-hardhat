@@ -15,6 +15,7 @@
   "license": "ISC",
   "devDependencies": {
     "@0x/contracts-asset-proxy": "3.7.12",
+    "@0x/contracts-coordinator": "^3.1.31",
     "@0x/contracts-erc20": "3.3.9",
     "@0x/contracts-exchange": "3.2.31",
     "@0x/contracts-staking": "^2.0.38",
