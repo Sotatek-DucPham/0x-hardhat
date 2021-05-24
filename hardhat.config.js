@@ -28,29 +28,50 @@ module.exports = {
   solidity: {
     compilers: [
       {
-        version: "0.6.5",
+        version: "0.6.12",
         settings: {
+          evmVersion: "istanbul",
           optimizer: {
             enabled: true,
-            runs: 200,
+            runs: 1000000,
+            details: {
+              yul: true,
+              deduplicate: true,
+              cse: true,
+              constantOptimizer: true,
+            },
           },
         },
       },
       {
         version: "0.5.17",
         settings: {
+          evmVersion: "istanbul",
           optimizer: {
             enabled: true,
-            runs: 200,
+            runs: 1000000,
+            details: {
+              yul: true,
+              deduplicate: true,
+              cse: true,
+              constantOptimizer: true,
+            },
           },
         },
       },
       {
         version: "0.4.11",
         settings: {
+          evmVersion: "istanbul",
           optimizer: {
             enabled: true,
-            runs: 200,
+            runs: 1000000,
+            details: {
+              yul: true,
+              deduplicate: true,
+              cse: true,
+              constantOptimizer: true,
+            },
           },
         },
       },
