@@ -1,4 +1,4 @@
-const { erc20TokenInfo } = require("../src/utils/token_info");
+const { erc20TokenInfo, erc721TokenInfo } = require("../src/utils/token_info");
 
 const func = async function ({ deployments, getNamedAccounts, getChainId }) {
   const { deploy } = deployments;
@@ -43,6 +43,12 @@ const func = async function ({ deployments, getNamedAccounts, getChainId }) {
       log: true,
     });
   }
+
+  const cryptoKittieToken = await deploy("DummyERC721Token", {
+    from: deployer,
+    args: [erc721TokenInfo[0].name, erc721TokenInfo[0].symbol],
+    log: true,
+  });
 };
 
 module.exports = func;
