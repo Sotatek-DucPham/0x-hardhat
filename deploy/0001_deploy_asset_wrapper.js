@@ -1,3 +1,5 @@
+const { erc20TokenInfo } = require("../src/utils/token_info");
+
 const func = async function ({ deployments, getNamedAccounts, getChainId }) {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
@@ -31,6 +33,16 @@ const func = async function ({ deployments, getNamedAccounts, getChainId }) {
     args: [chainId],
     log: true,
   });
+
+  // Dummy ERC20 tokens
+  for (const token of erc20TokenInfo) {
+    const totalSupply = "1000000000000000000000000000";
+    await deploy("DummyERC20Token", {
+      from: deployer,
+      args: [token.name, token.symbol, token.decimals.toString(), totalSupply],
+      log: true,
+    });
+  }
 };
 
 module.exports = func;
