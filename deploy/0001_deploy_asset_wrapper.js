@@ -4,7 +4,7 @@ const func = async function ({ deployments, getNamedAccounts, getChainId }) {
   const { deploy, execute } = deployments;
   const { deployer } = await getNamedAccounts();
 
-  await deploy("ERC20Proxy", {
+  const erc20Proxy = await deploy("ERC20Proxy", {
     from: deployer,
     args: [],
     log: true,
@@ -28,7 +28,7 @@ const func = async function ({ deployments, getNamedAccounts, getChainId }) {
   });
 
   const chainId = await getChainId();
-  await deploy("Exchange", {
+  const exchange = await deploy("Exchange", {
     from: deployer,
     args: [chainId],
     log: true,
@@ -69,32 +69,19 @@ const func = async function ({ deployments, getNamedAccounts, getChainId }) {
     log: true,
   });
 
-  const erc20Proxy = await deployments.get("ERC20Proxy");
-  const exchange = await deployments.get("ERC20Proxy");
-  await execute(
-    "ERC20Proxy",
-    { from: deployer },
-    "addAuthorizedAddress",
-    exchange.address
-  );
-  await execute(
-    "ERC721Proxy",
-    { from: deployer },
-    "addAuthorizedAddress",
-    exchange.address
-  );
-  await execute(
-    "ERC1155Proxy",
-    { from: deployer },
-    "addAuthorizedAddress",
-    exchange.address
-  );
-  await execute(
-    "MultiAssetProxy",
-    { from: deployer },
-    "addAuthorizedAddress",
-    exchange.address
-  );
+  await execute("ERC20Proxy", { from: deployer }, "addAuthorizedAddress", exchange.address);
+  await execute("ERC721Proxy", { from: deployer }, "addAuthorizedAddress", exchange.address);
+  await execute("ERC1155Proxy", { from: deployer }, "addAuthorizedAddress", exchange.address);
+  await execute("MultiAssetProxy", { from: deployer }, "addAuthorizedAddress", exchange.address);
+
+  // MultiAssetProxy
+  await execute("ERC20Proxy", { from: deployer }, "addAuthorizedAddress", multiAssetProxy.address);
+  await execute("ERC721Proxy", { from: deployer }, "addAuthorizedAddress", multiAssetProxy.address);
+  await execute("ERC1155Proxy", { from: deployer }, "addAuthorizedAddress", multiAssetProxy.address);
+  await execute("MultiAssetProxy", { from: deployer }, "registerAssetProxy", erc20Proxy.address);
+  await execute("MultiAssetProxy", { from: deployer }, "registerAssetProxy", erc721Proxy.address);
+  await execute("MultiAssetProxy", { from: deployer }, "registerAssetProxy", erc1155Proxy.address);
+  await execute("MultiAssetProxy", { from: deployer }, "registerAssetProxy", staticCallProxy.address);
 };
 
 module.exports = func;
