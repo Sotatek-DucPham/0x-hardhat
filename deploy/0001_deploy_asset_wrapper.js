@@ -2,7 +2,7 @@ const func = async function ({ deployments, getNamedAccounts }) {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
 
-  await deploy("ZRXToken", {
+  await deploy("ERC20Proxy", {
     from: deployer,
     args: [],
     log: true,
