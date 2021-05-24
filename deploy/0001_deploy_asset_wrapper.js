@@ -49,6 +49,25 @@ const func = async function ({ deployments, getNamedAccounts, getChainId }) {
     args: [erc721TokenInfo[0].name, erc721TokenInfo[0].symbol],
     log: true,
   });
+
+  // 1155 Asset Proxy
+  const erc1155Proxy = await deploy("ERC1155Proxy", {
+    from: deployer,
+    args: [],
+    log: true,
+  });
+
+  const staticCallProxy = await deploy("StaticCallProxy", {
+    from: deployer,
+    args: [],
+    log: true,
+  });
+
+  const multiAssetProxy = await deploy("MultiAssetProxy", {
+    from: deployer,
+    args: [],
+    log: true,
+  });
 };
 
 module.exports = func;
