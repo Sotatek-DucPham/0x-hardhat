@@ -198,6 +198,59 @@ const func = async function ({ deployments, getNamedAccounts, getChainId }) {
     log: true,
     args: ["JAM Token", "JAM", 18, "1000000000000000000000000000"],
   });
+
+  // Exchange Proxy //////////////////////////////////////////////////////////
+
+  const bridgeAdapter = await deploy("BridgeAdapter", {
+    from: deployer,
+    log: true,
+    args: [etherToken.address],
+  });
+  // const bridgeAdapter = await BridgeAdapterContract.deployFrom0xArtifactAsync(
+  //   exchangeProxyArtifacts.BridgeAdapter,
+  //   provider,
+  //   txDefaults,
+  //   allArtifacts,
+  //   etherToken.address
+  // );
+
+  // const exchangeProxy = await fullMigrateExchangeProxyAsync(txDefaults.from, provider, txDefaults);
+  // const exchangeProxyFlashWalletAddress = await exchangeProxy.getTransformWallet().callAsync();
+
+  // // Deploy transformers.
+  // const wethTransformer = await WethTransformerContract.deployFrom0xArtifactAsync(
+  //   exchangeProxyArtifacts.WethTransformer,
+  //   provider,
+  //   txDefaults,
+  //   allArtifacts,
+  //   etherToken.address
+  // );
+  // const payTakerTransformer = await PayTakerTransformerContract.deployFrom0xArtifactAsync(
+  //   exchangeProxyArtifacts.PayTakerTransformer,
+  //   provider,
+  //   txDefaults,
+  //   allArtifacts
+  // );
+  // const affiliateFeeTransformer = await AffiliateFeeTransformerContract.deployFrom0xArtifactAsync(
+  //   exchangeProxyArtifacts.AffiliateFeeTransformer,
+  //   provider,
+  //   txDefaults,
+  //   allArtifacts
+  // );
+  // const fillQuoteTransformer = await FillQuoteTransformerContract.deployFrom0xArtifactAsync(
+  //   exchangeProxyArtifacts.FillQuoteTransformer,
+  //   provider,
+  //   txDefaults,
+  //   allArtifacts,
+  //   bridgeAdapter.address,
+  //   exchangeProxy.address
+  // );
+  // const positiveSlippageFeeTransformer = await PositiveSlippageFeeTransformerContract.deployFrom0xArtifactAsync(
+  //   exchangeProxyArtifacts.PositiveSlippageFeeTransformer,
+  //   provider,
+  //   txDefaults,
+  //   allArtifacts
+  // );
 };
 
 module.exports = func;
