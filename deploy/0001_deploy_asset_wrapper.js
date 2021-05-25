@@ -1,3 +1,4 @@
+const { deployments, ethers } = require("hardhat");
 const { erc20TokenInfo, erc721TokenInfo } = require("../src/utils/token_info");
 
 const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -139,6 +140,46 @@ const func = async function ({ deployments, getNamedAccounts, getChainId }) {
     from: deployer,
     log: true,
   });
+
+  await execute("Exchange", { from: deployer }, "registerAssetProxy", erc20BridgeProxy.address);
+  await execute("ERC20BridgeProxy", { from: deployer }, "addAuthorizedAddress", exchange.address);
+  await execute("ERC20BridgeProxy", { from: deployer }, "addAuthorizedAddress", multiAssetProxy.address);
+  await execute("MultiAssetProxy", { from: deployer }, "registerAssetProxy", erc20BridgeProxy.address);
+
+  const zrxProxy = erc20Proxy.address;
+  const zrxVault = await deploy("ZrxVault", {
+    from: deployer,
+    log: true,
+    args: [zrxProxy, zrxToken.address],
+  });
+
+  // Note we use TestStakingContract as the deployed bytecode of a StakingContract
+  // has the tokens hardcoded
+  const stakingLogic = await deploy("TestStaking", {
+    from: deployer,
+    log: true,
+    args: [etherToken.address, zrxVault.address],
+  });
+
+  const stakingProxy = await deploy("StakingProxy", {
+    from: deployer,
+    log: true,
+    args: [stakingLogic.address],
+  });
+
+  await execute("ERC20Proxy", { from: deployer }, "addAuthorizedAddress", zrxVault.address);
+
+  // Reference the Proxy as the StakingContract for setup
+  const stakingDel = (await ethers.getContractFactory("TestStaking")).attach(stakingProxy.address);
+  await execute("StakingProxy", { from: deployer }, "addAuthorizedAddress", deployer);
+  await stakingDel.addExchangeAddress(exchange.address, { from: deployer });
+  await execute("Exchange", { from: deployer }, "setProtocolFeeCollectorAddress", stakingProxy.address);
+  await execute("Exchange", { from: deployer }, "setProtocolFeeMultiplier", "70000");
+
+  await execute("ZrxVault", { from: deployer }, "addAuthorizedAddress", deployer);
+  await execute("ZrxVault", { from: deployer }, "setStakingProxy", stakingProxy.address);
+  await execute("TestStaking", { from: deployer }, "addAuthorizedAddress", deployer);
+  await execute("TestStaking", { from: deployer }, "addExchangeAddress", exchange.address);
 };
 
 module.exports = func;
