@@ -206,14 +206,26 @@ const func = async function ({ deployments, getNamedAccounts, getChainId }) {
     log: true,
     args: [etherToken.address],
   });
-  // const bridgeAdapter = await BridgeAdapterContract.deployFrom0xArtifactAsync(
-  //   exchangeProxyArtifacts.BridgeAdapter,
-  //   provider,
-  //   txDefaults,
-  //   allArtifacts,
-  //   etherToken.address
-  // );
 
+  const migrator = await deploy("FullMigration", {
+    from: deployer,
+    log: true,
+    args: [deployer],
+  });
+  // const zeroEx = await ZeroExContract.deployFrom0xArtifactAsync(
+  //     artifacts.ZeroEx,
+  //     provider,
+  //     txDefaults,
+  //     artifacts,
+  //     await migrator.getBootstrapper().callAsync(),
+  // );
+  // const _config = { ...config, zeroExAddress: zeroEx.address };
+  // const _features = await deployFullFeaturesAsync(provider, txDefaults, _config, features, featureArtifacts);
+  // const migrateOpts = {
+  //     transformerDeployer: txDefaults.from as string,
+  //     ..._config,
+  // };
+  // await migrator.migrateZeroEx(owner, zeroEx.address, _features, migrateOpts).awaitTransactionSuccessAsync();
   // const exchangeProxy = await fullMigrateExchangeProxyAsync(txDefaults.from, provider, txDefaults);
   // const exchangeProxyFlashWalletAddress = await exchangeProxy.getTransformWallet().callAsync();
 
