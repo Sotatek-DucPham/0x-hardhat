@@ -18,6 +18,7 @@
     "@0x/contracts-coordinator": "^3.1.31",
     "@0x/contracts-erc20": "3.3.9",
     "@0x/contracts-exchange": "3.2.31",
+    "@0x/contracts-extensions": "^6.2.25",
     "@0x/contracts-staking": "^2.0.38",
     "@0x/contracts-utils": "4.7.9",
     "@nomiclabs/hardhat-ethers": "2.0.2",

@@ -180,6 +180,24 @@ const func = async function ({ deployments, getNamedAccounts, getChainId }) {
   await execute("ZrxVault", { from: deployer }, "setStakingProxy", stakingProxy.address);
   await execute("TestStaking", { from: deployer }, "addAuthorizedAddress", deployer);
   await execute("TestStaking", { from: deployer }, "addExchangeAddress", exchange.address);
+
+  // Forwarder
+  // Deployed after Exchange and Staking is configured as it queries
+  // in the constructor
+  const exchangeV2 = exchange;
+  const exchangeV2Address = exchangeV2.address;
+  const forwarder = await deploy("Forwarder", {
+    from: deployer,
+    log: true,
+    args: [exchange.address, exchangeV2Address || NULL_ADDRESS, etherToken.address],
+  });
+
+  // JAM
+  const jamToken = await deploy("DummyERC20Token", {
+    from: deployer,
+    log: true,
+    args: ["JAM Token", "JAM", 18, "1000000000000000000000000000"],
+  });
 };
 
 module.exports = func;

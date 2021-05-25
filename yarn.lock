@@ -149,6 +149,16 @@
     "@0x/utils" "^6.4.3"
     lodash "^4.17.11"
 
+"@0x/contracts-extensions@^6.2.25":
+  version "6.2.25"
+  resolved "https://registry.yarnpkg.com/@0x/contracts-extensions/-/contracts-extensions-6.2.25.tgz#6f0fdeff4a7b3febdb4713238e2cc525869fb216"
+  integrity sha512-N0sEhFOyBaW7ERkGqb7DUAHMVXAo1hJLQLLMF55b4x253nvtX3qrQYaW1Db2NdIo639C1oafBUWI86PNV9Cbhw==
+  dependencies:
+    "@0x/base-contract" "^6.4.0"
+    "@0x/contracts-test-utils" "^5.4.1"
+    "@0x/typescript-typings" "^5.2.0"
+    ethereum-types "^3.5.0"
+
 "@0x/contracts-staking@^2.0.38":
   version "2.0.38"
   resolved "https://registry.yarnpkg.com/@0x/contracts-staking/-/contracts-staking-2.0.38.tgz#d7266f2451b415ead0aa5e00f4cd0652166354ba"
