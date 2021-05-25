@@ -24,6 +24,10 @@ module.exports = {
       url: process.env.RINKEBY_RPC,
       accounts: [process.env.RINKEBY_PRIVATE_KEY],
     },
+    evrynet: {
+      url: "http://localhost:22001",
+      accounts: [process.env.RINKEBY_PRIVATE_KEY],
+    },
   },
   solidity: {
     compilers: [
