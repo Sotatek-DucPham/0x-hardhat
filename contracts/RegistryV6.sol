@@ -1,9 +1,0 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.6.5;
-
-import "@0x/contracts-zero-ex/contracts/src/transformers/bridges/BridgeAdapter.sol";
-// import "@0x/contracts-zero-ex/contracts/src/migrations/FullMigration.sol";
-
-contract RegistryV6 {
-
-}
